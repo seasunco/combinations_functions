@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Section 2.1: Combinations of Functions</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js for interactive graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .math-font {
+            font-family: 'Lato', sans-serif;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .tab-active {
+            border-bottom: 2px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .tab-inactive {
+            color: #64748b;
+        }
+        .tab-inactive:hover {
+            color: #334155;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .correct-answer {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+        }
+        .wrong-answer {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">M</div>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <span class="text-sm font-medium text-slate-500">Section 2.1</span>
+                <span class="text-sm font-semibold text-blue-600">Combinations of Functions</span>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Main Lesson Title (Centered Header) -->
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Section 2.1: Combinations of Functions</h1>
+            <p class="text-lg text-slate-600 mt-3 max-w-3xl mx-auto">Master the art of combining functions through arithmetic operations and composition. Explore domains, difference quotients, and real-world applications.</p>
+        </div>
+
+        <!-- Interactive Tabs (Moved between Title and Learning Objectives) -->
+        <div class="flex border-b border-slate-200 mb-8 overflow-x-auto">
+            <button onclick="switchTab('arithmetic')" id="tab-arithmetic" class="tab-active px-6 py-4 text-sm font-medium whitespace-nowrap focus:outline-none">1. Arithmetic Operations</button>
+            <button onclick="switchTab('domain')" id="tab-domain" class="tab-inactive px-6 py-4 text-sm font-medium whitespace-nowrap focus:outline-none">2. Domains & Difference Quotient</button>
+            <button onclick="switchTab('composition')" id="tab-composition" class="tab-inactive px-6 py-4 text-sm font-medium whitespace-nowrap focus:outline-none">3. Composition of Functions</button>
+            <button onclick="switchTab('application')" id="tab-application" class="tab-inactive px-6 py-4 text-sm font-medium whitespace-nowrap focus:outline-none">4. Real-Life Application</button>
+            <button onclick="switchTab('challenge')" id="tab-challenge" class="tab-inactive px-6 py-4 text-sm font-medium whitespace-nowrap focus:outline-none text-red-600">5. Challenge Quiz</button>
+        </div>
+
+        <!-- Learning Objectives -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg mb-10">
+            <h3 class="text-lg font-bold text-blue-800 mb-3">Learning Objectives</h3>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-blue-900">
+                <li class="flex items-start"><span class="mr-2">✓</span> Find and simplify functions involving arithmetic expressions.</li>
+                <li class="flex items-start"><span class="mr-2">✓</span> Combine functions through addition, subtraction, multiplication, and division.</li>
+                <li class="flex items-start"><span class="mr-2">✓</span> Determine the domain of a function resulting from an arithmetic operation.</li>
+                <li class="flex items-start"><span class="mr-2">✓</span> Find the difference quotient of a function.</li>
+                <li class="flex items-start"><span class="mr-2">✓</span> Create a new function through composition of functions.</li>
+                <li class="flex items-start"><span class="mr-2">✓</span> Find the domain of a composite function.</li>
+                <li class="flex items-start"><span class="mr-2">✓</span> Find values of composite functions.</li>
+                <li class="flex items-start"><span class="mr-2">✓</span> Decompose a composite function into its component functions.</li>
+            </ul>
+        </div>
+
+        <!-- Content Area -->
+        <div id="content-area">
+            
+            <!-- SECTION 1: ARITHMETIC OPERATIONS -->
+            <div id="section-arithmetic" class="space-y-8 animate-fade-in">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Arithmetic Combinations of Functions</h3>
+                    <p class="text-slate-600 mb-6">Just as you can add, subtract, multiply, and divide real numbers, you can perform these operations on functions. Let $f$ and $g$ be two functions with overlapping domains.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                            <h4 class="font-bold text-slate-700 mb-4">Definitions</h4>
+                            <ul class="space-y-3 text-sm math-font">
+                                <li><strong>Sum:</strong> $(f+g)(x) = f(x) + g(x)$</li>
+                                <li><strong>Difference:</strong> $(f-g)(x) = f(x) - g(x)$</li>
+                                <li><strong>Product:</strong> $(fg)(x) = f(x) \cdot g(x)$</li>
+                                <li><strong>Quotient:</strong> $\left(\frac{f}{g}\right)(x) = \frac{f(x)}{g(x)}, \quad g(x) \neq 0$</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Interactive Calculator -->
+                        <div class="bg-white p-6 rounded-lg border border-blue-100 shadow-sm">
+                            <h4 class="font-bold text-blue-700 mb-4">Interactive Explorer</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Define f(x)</label>
+                                    <input type="text" id="func-f-input" value="x^2" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm" placeholder="e.g., x^2">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Define g(x)</label>
+                                    <input type="text" id="func-g-input" value="2*x + 1" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm" placeholder="e.g., 2x + 1">
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="calculateCombo('add')" class="flex-1 bg-blue-100 text-blue-700 py-2 rounded hover:bg-blue-200 text-sm font-bold">+</button>
+                                    <button onclick="calculateCombo('sub')" class="flex-1 bg-blue-100 text-blue-700 py-2 rounded hover:bg-blue-200 text-sm font-bold">-</button>
+                                    <button onclick="calculateCombo('mul')" class="flex-1 bg-blue-100 text-blue-700 py-2 rounded hover:bg-blue-200 text-sm font-bold">×</button>
+                                    <button onclick="calculateCombo('div')" class="flex-1 bg-blue-100 text-blue-700 py-2 rounded hover:bg-blue-200 text-sm font-bold">÷</button>
+                                </div>
+                                <div id="calc-result" class="mt-4 p-3 bg-slate-100 rounded text-center font-mono text-lg min-h-[3rem] flex items-center justify-center">
+                                    Result will appear here...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-6">
+                        <h4 class="font-bold text-slate-800 mb-3">Example 1: Simplifying Arithmetic Combinations</h4>
+                        <p class="mb-2 text-slate-600">Given $f(x) = 2x - 3$ and $g(x) = x^2 - 1$, find $(f+g)(x)$ and $(fg)(x)$.</p>
+                        
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-4">
+                            <p class="font-bold text-yellow-800">Solution:</p>
+                            <div class="mt-2 space-y-2 text-sm text-yellow-900">
+                                <p><strong>Sum:</strong> $(f+g)(x) = (2x - 3) + (x^2 - 1) = x^2 + 2x - 4$</p>
+                                <p><strong>Product:</strong> $(fg)(x) = (2x - 3)(x^2 - 1) = 2x^3 - 2x - 3x^2 + 3 = 2x^3 - 3x^2 - 2x + 3$</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: DOMAINS & DIFFERENCE QUOTIENT -->
+            <div id="section-domain" class="space-y-8 hidden animate-fade-in">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Domains of Combined Functions</h3>
+                    <p class="text-slate-600 mb-6">The domain of an arithmetic combination of functions $f$ and $g$ consists of the intersection of their domains.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="font-bold text-slate-700 mb-3">Rules for Domain</h4>
+                            <ul class="list-disc pl-5 space-y-2 text-slate-600">
+                                <li><strong>General Rule:</strong> Domain is $D_f \cap D_g$.</li>
+                                <li><strong>For Division:</strong> Exclude any $x$ where $g(x) = 0$.</li>
+                                <li><strong>For Square Roots:</strong> The expression inside must be $\ge 0$.</li>
+                            </ul>
+                            
+                            <div class="mt-6 bg-slate-50 p-4 rounded border border-slate-200">
+                                <h5 class="font-bold text-sm uppercase text-slate-500 mb-2">Interactive Table: Domain Analysis</h5>
+                                <table class="w-full text-sm text-left">
+                                    <thead class="bg-slate-200 text-slate-700">
+                                        <tr>
+                                            <th class="p-2">Function Operation</th>
+                                            <th class="p-2">Restriction</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-200">
+                                        <tr>
+                                            <td class="p-2 font-mono">$(f+g)(x)$</td>
+                                            <td class="p-2">Intersection of domains</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2 font-mono">$(f/g)(x)$</td>
+                                            <td class="p-2">Intersection AND $g(x) \neq 0$</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2 font-mono">$\sqrt{f(x)}$</td>
+                                            <td class="p-2">$f(x) \ge 0$</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg border border-blue-100 shadow-sm">
+                            <h4 class="font-bold text-blue-700 mb-4">Difference Quotient</h4>
+                            <p class="text-sm text-slate-600 mb-4">The difference quotient is fundamental in calculus. It represents the average rate of change.</p>
+                            <div class="text-center py-4 bg-slate-50 rounded mb-4 math-font text-lg">
+                                $$ \frac{f(x+h) - f(x)}{h}, \quad h \neq 0 $$
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <label class="block text-xs font-bold text-slate-500 uppercase">Test Function f(x)</label>
+                                <select id="dq-func-select" onchange="updateDQ()" class="w-full p-2 border border-slate-300 rounded text-sm">
+                                    <option value="square">f(x) = x²</option>
+                                    <option value="linear">f(x) = 3x + 2</option>
+                                    <option value="inverse">f(x) = 1/x</option>
+                                </select>
+                                <div id="dq-steps" class="mt-4 text-sm text-slate-700 space-y-2 font-mono bg-slate-50 p-3 rounded">
+                                    <!-- Steps injected via JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: COMPOSITION -->
+            <div id="section-composition" class="space-y-8 hidden animate-fade-in">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Composition of Functions</h3>
+                    <p class="text-slate-600 mb-6">Composition involves applying one function to the results of another. The notation $(f \circ g)(x)$ means $f(g(x))$.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <!-- Concept Card -->
+                        <div class="md:col-span-1 bg-indigo-50 p-6 rounded-lg border border-indigo-100">
+                            <h4 class="font-bold text-indigo-800 mb-2">Notation</h4>
+                            <p class="text-2xl math-font text-center my-4">$(f \circ g)(x) = f(g(x))$</p>
+                            <p class="text-sm text-indigo-700 text-center">"f of g of x"</p>
+                            <hr class="my-4 border-indigo-200">
+                            <p class="text-xs text-indigo-600"><strong>Note:</strong> Order matters! Usually $f(g(x)) \neq g(f(x))$.</p>
+                        </div>
+
+                        <!-- Visualizer -->
+                        <div class="md:col-span-2 bg-white p-6 rounded-lg border border-slate-200 shadow-sm relative overflow-hidden">
+                            <h4 class="font-bold text-slate-700 mb-4">Visualizing Composition</h4>
+                            <div class="flex items-center justify-center space-x-4 mb-6">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-500 font-bold text-blue-700">Input<br>x</div>
+                                </div>
+                                <div class="h-1 w-12 bg-slate-300"></div>
+                                <div class="text-center">
+                                    <div class="w-20 h-20 rounded-lg bg-green-100 flex items-center justify-center border-2 border-green-500 font-bold text-green-700 flex-col">
+                                        <span>g(x)</span>
+                                        <span class="text-xs font-normal">Inner</span>
+                                    </div>
+                                </div>
+                                <div class="h-1 w-12 bg-slate-300"></div>
+                                <div class="text-center">
+                                    <div class="w-20 h-20 rounded-lg bg-purple-100 flex items-center justify-center border-2 border-purple-500 font-bold text-purple-700 flex-col">
+                                        <span>f(x)</span>
+                                        <span class="text-xs font-normal">Outer</span>
+                                    </div>
+                                </div>
+                                <div class="h-1 w-12 bg-slate-300"></div>
+                                <div class="text-center">
+                                    <div class="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center border-2 border-orange-500 font-bold text-orange-700">Output<br>f(g(x))</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h5 class="font-bold text-sm text-slate-600 mb-2">Decomposition Example</h5>
+                                <p class="text-sm text-slate-600 mb-2">Given $h(x) = \sqrt{x^2 + 1}$, find $f$ and $g$ such that $h(x) = f(g(x))$.</p>
+                                <div class="grid grid-cols-2 gap-4 mt-3">
+                                    <div class="text-center p-2 bg-white rounded shadow-sm">
+                                        <span class="text-xs text-slate-400 block">Inner Function g(x)</span>
+                                        <span class="font-mono font-bold text-green-600">x² + 1</span>
+                                    </div>
+                                    <div class="text-center p-2 bg-white rounded shadow-sm">
+                                        <span class="text-xs text-slate-400 block">Outer Function f(x)</span>
+                                        <span class="font-mono font-bold text-purple-600">√x</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 pt-6">
+                        <h4 class="font-bold text-slate-800 mb-3">Finding the Domain of a Composite Function</h4>
+                        <p class="text-slate-600 mb-4">The domain of $f \circ g$ is the set of all $x$ in the domain of $g$ such that $g(x)$ is in the domain of $f$.</p>
+                        <div class="bg-blue-50 p-4 rounded border-l-4 border-blue-500">
+                            <p class="text-sm text-blue-900"><strong>Steps:</strong></p>
+                            <ol class="list-decimal pl-5 mt-2 text-sm text-blue-800 space-y-1">
+                                <li>Find the domain of the inner function $g$.</li>
+                                <li>Find the domain of the composite function $f(g(x))$.</li>
+                                <li>The domain is the intersection of these two sets.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: REAL LIFE APPLICATION -->
+            <div id="section-application" class="space-y-8 hidden animate-fade-in">
+                <div class="card p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase">Real World</span>
+                        <h3 class="text-2xl font-bold text-slate-800">Application: Manufacturing Cost</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <p class="text-slate-600">A factory produces custom widgets. We can model the production using composite functions.</p>
+                            
+                            <div class="bg-slate-50 p-4 rounded border border-slate-200">
+                                <h4 class="font-bold text-slate-700 mb-2">The Functions</h4>
+                                <ul class="space-y-2 text-sm">
+                                    <li><strong>$n(t)$:</strong> Number of widgets produced after $t$ hours.<br>
+                                        <span class="font-mono text-blue-600">$$ n(t) = 50t $$</span>
+                                    </li>
+                                    <li><strong>$C(n)$:</strong> Cost to produce $n$ widgets.<br>
+                                        <span class="font-mono text-blue-600">$$ C(n) = 0.01n^2 + 2n + 100 $$</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-white p-4 rounded border border-slate-200 shadow-sm">
+                                <h4 class="font-bold text-slate-700 mb-2">Problem</h4>
+                                <p class="text-sm text-slate-600 mb-4">Find the cost as a function of time, $C(n(t))$, and calculate the cost after 4 hours.</p>
+                                
+                                <button onclick="solveApplication()" class="btn-primary w-full mb-4">Show Step-by-Step Solution</button>
+                                
+                                <div id="app-solution" class="hidden space-y-3 text-sm border-t border-slate-100 pt-4">
+                                    <div>
+                                        <span class="font-bold text-slate-700">Step 1: Substitute</span>
+                                        <p class="font-mono text-slate-600">Replace $n$ in $C(n)$ with $50t$.</p>
+                                        <p class="font-mono text-slate-600">$$ C(n(t)) = 0.01(50t)^2 + 2(50t) + 100 $$</p>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-slate-700">Step 2: Simplify</span>
+                                        <p class="font-mono text-slate-600">$$ = 0.01(2500t^2) + 100t + 100 $$</p>
+                                        <p class="font-mono text-slate-600">$$ = 25t^2 + 100t + 100 $$</p>
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-slate-700">Step 3: Evaluate at t=4</span>
+                                        <p class="font-mono text-slate-600">$$ C(4) = 25(4)^2 + 100(4) + 100 $$</p>
+                                        <p class="font-mono text-slate-600">$$ = 25(16) + 400 + 100 $$</p>
+                                        <p class="font-mono text-slate-600">$$ = 400 + 400 + 100 = \$900 $$</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                            <h4 class="font-bold text-slate-700 mb-3 text-center">Interactive Graph: Cost vs Time</h4>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <canvas id="costGraph" width="400" height="300"></canvas>
+                            </div>
+                            <p class="text-xs text-slate-500 text-center italic mt-3">Figure 1: C(t) = 25t² + 100t + 100</p>
+                            
+                            <!-- Interactive Controls -->
+                            <div class="mt-4 p-3 bg-white rounded border border-slate-200">
+                                <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Explore: Cost at time t =</label>
+                                <div class="flex items-center gap-3">
+                                    <input type="range" id="time-slider" min="0" max="10" step="0.5" value="4" class="flex-1" oninput="updateGraphPoint(this.value)">
+                                    <span id="time-value" class="font-mono font-bold text-blue-600 w-12 text-center">4 hrs</span>
+                                </div>
+                                <div class="mt-2 text-center">
+                                    <span class="text-sm text-slate-600">Cost: </span>
+                                    <span id="cost-value" class="font-mono font-bold text-green-600">$900</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: CHALLENGE QUIZ -->
+            <div id="section-challenge" class="space-y-8 hidden animate-fade-in">
+                <div class="card p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl font-bold text-slate-800">Challenge: 10 Questions</h3>
+                        <div class="text-right">
+                            <span class="text-sm text-slate-500">Score:</span>
+                            <span id="score-display" class="text-xl font-bold text-blue-600 ml-2">0/10</span>
+                        </div>
+                    </div>
+                    
+                    <div id="quiz-container" class="space-y-6">
+                        <!-- Questions injected via JS -->
+                    </div>
+
+                    <div class="mt-8 flex justify-center">
+                        <button onclick="checkQuiz()" class="bg-slate-800 text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-700 transition shadow-lg">Submit Answers</button>
+                        <button onclick="resetQuiz()" class="ml-4 bg-white text-slate-600 border border-slate-300 px-8 py-3 rounded-lg font-bold hover:bg-slate-50 transition">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2026 College Mathematics Dept. All rights reserved.</p>
+            <p class="text-sm mt-2">Designed for Educational Purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Tab Switching Logic ---
+        function switchTab(tabId) {
+            const sections = ['arithmetic', 'domain', 'composition', 'application', 'challenge'];
+            sections.forEach(s => {
+                document.getElementById(`section-${s}`).classList.add('hidden');
+                document.getElementById(`tab-${s}`).classList.remove('tab-active');
+                document.getElementById(`tab-${s}`).classList.add('tab-inactive');
+            });
+
+            document.getElementById(`section-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.remove('tab-inactive');
+            document.getElementById(`tab-${tabId}`).classList.add('tab-active');
+            
+            // Initialize graph when application tab is shown
+            if (tabId === 'application') {
+                setTimeout(initCostGraph, 100);
+            }
+        }
+
+        // --- Arithmetic Calculator Logic ---
+        function calculateCombo(op) {
+            const fStr = document.getElementById('func-f-input').value;
+            const gStr = document.getElementById('func-g-input').value;
+            const resultDiv = document.getElementById('calc-result');
+
+            let latexOp = '';
+            
+            if(op === 'add') { latexOp = '+'; }
+            if(op === 'sub') { latexOp = '-'; }
+            if(op === 'mul') { latexOp = '\\cdot'; }
+            if(op === 'div') { latexOp = '\\frac{...}{...}'; }
+
+            const cleanF = fStr.replace(/\*/g, ''); 
+            const cleanG = gStr.replace(/\*/g, '');
+
+            let displayHtml = '';
+            
+            if (op === 'div') {
+                displayHtml = `$$ \\left(\\frac{f}{g}\\right)(x) = \\frac{${cleanF}}{${cleanG}} $$`;
+            } else {
+                displayHtml = `$$ (f ${latexOp} g)(x) = (${cleanF}) ${latexOp} (${cleanG}) $$`;
+            }
+
+            resultDiv.innerHTML = displayHtml;
+            
+            if(window.MathJax) {
+                MathJax.typesetPromise([resultDiv]);
+            }
+        }
+
+        // --- Difference Quotient Logic ---
+        function updateDQ() {
+            const type = document.getElementById('dq-func-select').value;
+            const container = document.getElementById('dq-steps');
+            let html = '';
+
+            if(type === 'square') {
+                html = `
+                    <p><strong>1. Find f(x+h):</strong> $(x+h)^2 = x^2 + 2xh + h^2$</p>
+                    <p><strong>2. Subtract f(x):</strong> $(x^2 + 2xh + h^2) - x^2 = 2xh + h^2$</p>
+                    <p><strong>3. Divide by h:</strong> $\\frac{2xh + h^2}{h} = 2x + h$</p>
+                `;
+            } else if (type === 'linear') {
+                html = `
+                    <p><strong>1. Find f(x+h):</strong> $3(x+h) + 2 = 3x + 3h + 2$</p>
+                    <p><strong>2. Subtract f(x):</strong> $(3x + 3h + 2) - (3x + 2) = 3h$</p>
+                    <p><strong>3. Divide by h:</strong> $\\frac{3h}{h} = 3$</p>
+                `;
+            } else if (type === 'inverse') {
+                html = `
+                    <p><strong>1. Find f(x+h):</strong> $\\frac{1}{x+h}$</p>
+                    <p><strong>2. Subtract f(x):</strong> $\\frac{1}{x+h} - \\frac{1}{x} = \\frac{x - (x+h)}{x(x+h)} = \\frac{-h}{x(x+h)}$</p>
+                    <p><strong>3. Divide by h:</strong> $\\frac{-h}{x(x+h)} \\cdot \\frac{1}{h} = \\frac{-1}{x(x+h)}$</p>
+                `;
+            }
+
+            container.innerHTML = html;
+            if(window.MathJax) {
+                MathJax.typesetPromise([container]);
+            }
+        }
+
+        // --- Application Logic ---
+        function solveApplication() {
+            const sol = document.getElementById('app-solution');
+            sol.classList.toggle('hidden');
+            if(!sol.classList.contains('hidden') && window.MathJax) {
+                MathJax.typesetPromise([sol]);
+            }
+        }
+
+        // --- Cost Graph Logic ---
+        let costChart = null;
+        let highlightPoint = null;
+
+        function initCostGraph() {
+            const ctx = document.getElementById('costGraph').getContext('2d');
+            
+            // Generate data points for C(t) = 25t² + 100t + 100
+            const timeLabels = [];
+            const costData = [];
+            for (let t = 0; t <= 10; t += 0.5) {
+                timeLabels.push(t);
+                costData.push(25 * t * t + 100 * t + 100);
+            }
+
+            if (costChart) {
+                costChart.destroy();
+            }
+
+            costChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timeLabels,
+                    datasets: [{
+                        label: 'C(t) = 25t² + 100t + 100',
+                        data: costData,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return `Time: ${context[0].label} hours`;
+                                },
+                                label: function(context) {
+                                    return `Cost: $${context.parsed.y.toFixed(0)}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time (hours)',
+                                font: { weight: 'bold' }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Cost ($)',
+                                font: { weight: 'bold' }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Add initial highlight point at t=4
+            updateGraphPoint(4);
+        }
+
+        function updateGraphPoint(timeValue) {
+            const t = parseFloat(timeValue);
+            const cost = 25 * t * t + 100 * t + 100;
+            
+            // Update display values
+            document.getElementById('time-value').textContent = `${t} hrs`;
+            document.getElementById('cost-value').textContent = `$${cost.toFixed(0)}`;
+            
+            // Update chart with highlight point
+            if (costChart) {
+                // Remove previous highlight
+                if (highlightPoint) {
+                    costChart.data.datasets.pop();
+                }
+                
+                // Add new highlight point
+                highlightPoint = {
+                    label: `t = ${t} hrs`,
+                    data: Array(21).fill(null).map((_, i) => {
+                        const xVal = i * 0.5;
+                        return Math.abs(xVal - t) < 0.01 ? cost : null;
+                    }),
+                    borderColor: '#ef4444',
+                    backgroundColor: '#ef4444',
+                    pointRadius: 8,
+                    pointHoverRadius: 10,
+                    showLine: false
+                };
+                
+                costChart.data.datasets.push(highlightPoint);
+                costChart.update();
+            }
+        }
+
+        // --- Quiz Data & Logic ---
+        const questions = [
+            {
+                q: "If $f(x) = x^2$ and $g(x) = x + 1$, what is $(f+g)(x)$?",
+                options: ["$x^2 + x + 1$", "$x^3 + 1$", "$x^2 + 1$", "$2x + 1$"],
+                correct: 0
+            },
+            {
+                q: "What is the domain of $f(x) = \\sqrt{x-3}$?",
+                options: ["$(-\\infty, 3]$", "$[3, \\infty)$", "$(3, \\infty)$", "All Real Numbers"],
+                correct: 1
+            },
+            {
+                q: "If $f(x) = 2x$ and $g(x) = x^2$, find $(f \\circ g)(x)$.",
+                options: ["$2x^2$", "$4x^2$", "$x^2 + 2x$", "$2x^3$"],
+                correct: 0
+            },
+            {
+                q: "Find the difference quotient for $f(x) = 5x + 2$.",
+                options: ["$5$", "$5+h$", "$5x$", "$h$"],
+                correct: 0
+            },
+            {
+                q: "If $h(x) = (x+1)^5$, identify the inner function $g(x)$ for decomposition $f(g(x))$.",
+                options: ["$x^5$", "$x+1$", "$(x+1)^5$", "$5x$"],
+                correct: 1
+            },
+            {
+                q: "Given $f(x) = \\frac{1}{x}$ and $g(x) = x-2$, what is the domain of $(f/g)(x)$?",
+                options: ["$x \\neq 0$", "$x \\neq 2$", "$x \\neq 0$ and $x \\neq 2$", "All Real Numbers"],
+                correct: 2
+            },
+            {
+                q: "Evaluate $(f \\circ g)(2)$ if $f(x) = x^2$ and $g(x) = 3x$.",
+                options: ["$12$", "$36$", "$18$", "$6$"],
+                correct: 1
+            },
+            {
+                q: "Which operation corresponds to $(fg)(x)$?",
+                options: ["Addition", "Subtraction", "Multiplication", "Division"],
+                correct: 2
+            },
+            {
+                q: "If $f(x) = \\sqrt{x}$ and $g(x) = x-4$, what is the domain of $f(g(x))$?",
+                options: ["$[0, \\infty)$", "$[4, \\infty)$", "$(4, \\infty)$", "$(-\\infty, 4]$"],
+                correct: 1
+            },
+            {
+                q: "Simplify $\\frac{f(x+h)-f(x)}{h}$ for $f(x) = x^2 - x$.",
+                options: ["$2x - 1 + h$", "$2x + h$", "$x + h - 1$", "$2x - 1$"],
+                correct: 0
+            }
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            
+            questions.forEach((item, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "bg-slate-50 p-6 rounded-lg border border-slate-200";
+                
+                let optionsHtml = '';
+                item.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <label class="flex items-center space-x-3 p-3 rounded hover:bg-white cursor-pointer border border-transparent transition-all option-label-${index}" id="lbl-${index}-${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" class="form-radio h-5 w-5 text-blue-600">
+                            <span class="text-slate-700">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <h4 class="font-bold text-slate-800 mb-4">Question ${index + 1}: ${item.q}</h4>
+                    <div class="space-y-2">
+                        ${optionsHtml}
+                    </div>
+                    <div id="feedback-${index}" class="mt-3 text-sm font-bold hidden"></div>
+                `;
+                container.appendChild(qDiv);
+            });
+
+            if(window.MathJax) {
+                MathJax.typesetPromise([container]);
+            }
+        }
+
+        function checkQuiz() {
+            let score = 0;
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                const labels = document.querySelectorAll(`.option-label-${index}`);
+                
+                labels.forEach(l => {
+                    l.classList.remove('correct-answer', 'wrong-answer');
+                });
+
+                if (selected) {
+                    const val = parseInt(selected.value);
+                    if (val === item.correct) {
+                        score++;
+                        feedback.textContent = "Correct!";
+                        feedback.className = "mt-3 text-sm font-bold text-green-600 block";
+                        document.getElementById(`lbl-${index}-${val}`).classList.add('correct-answer');
+                    } else {
+                        feedback.textContent = `Incorrect. The correct answer was: ${item.options[item.correct]}`;
+                        feedback.className = "mt-3 text-sm font-bold text-red-600 block";
+                        document.getElementById(`lbl-${index}-${val}`).classList.add('wrong-answer');
+                        document.getElementById(`lbl-${index}-${item.correct}`).classList.add('correct-answer');
+                    }
+                } else {
+                    feedback.textContent = "Please select an answer.";
+                    feedback.className = "mt-3 text-sm font-bold text-orange-500 block";
+                }
+            });
+            
+            document.getElementById('score-display').textContent = `${score}/10`;
+        }
+
+        function resetQuiz() {
+            renderQuiz();
+            document.getElementById('score-display').textContent = "0/10";
+        }
+
+        // --- Initialization ---
+        window.onload = function() {
+            renderQuiz();
+            updateDQ();
+            calculateCombo('add');
+        };
+
+    </script>
+</body>
+</html>
